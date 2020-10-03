@@ -30,12 +30,12 @@ type
   private
     FColorGradient : TColorGradient;
     FRGBGradient : TRGBGradient;
-    FColorFrom : TColor;
+    FColor : TColor;
     FColorTo : TColor;
-    FRFrom : Byte;
-    FGFrom : Byte;
-    FBFrom : Byte;
-    FRTo : Byte;
+    FR : Byte;
+    FG : Byte;
+    FB : Byte;
+    FRto : Byte;
     FGTo : Byte;
     FBTo : Byte;
     procedure SetColorFromToRGB( ColorFrom: TColor );
@@ -57,7 +57,7 @@ type
   published
     property ColorGradient : TColorGradient read FColorGradient write ChangeColorGradient;
     property RGB_Gradient : TRGBGradient read FRGBGradient write ChangeColorGradient;
-    property ColorFrom : TColor read FColorFrom write SetColorFromToRGB;
+    property Color : TColor read FColor write SetColorFromToRGB;
     property ColorTo : TColor read FColorTo write SetColorToToRGB;
     { Published-Deklarationen }
   end;
@@ -74,7 +74,7 @@ begin
   Inherited Create( AOwner );
   FColorGradient := cgVertical;
   FRGBGradient := rgbLinear;
-  FColorFrom := clBlue;
+  FColor := clBlue;
   FColorTo := clGreen;
   DoubleBuffered := true; // flackern beim Zeichnen vermeiden
 end;
@@ -86,11 +86,11 @@ procedure TGradientPanel.SetColorFromToRGB( ColorFrom: TColor );
 var
 RGB : Cardinal;
 begin
-  FColorFrom := ColorFrom;
-  RGB     := ColorToRGB( FColorFrom );
-  FRFrom  := GetRValue( RGB );
-  FGFrom  := GetGValue( RGB );
-  FBFrom  := GetBValue( RGB );
+  FColor := ColorFrom;
+  RGB     := ColorToRGB( FColor );
+  FR  := GetRValue( RGB );
+  FG  := GetGValue( RGB );
+  FB  := GetBValue( RGB );
   Refresh;
 end;
 
@@ -116,16 +116,16 @@ procedure TGradientPanel.SetRGBWithGradient( var R, G, B: Byte; x : Double );
 begin
   if rgbLinear = FRGBGradient then
   begin
-    R := GetLinearRGBValue( FRTo, FRFrom, x );
-    G := GetLinearRGBValue( FGTo, FGFrom, x );
-    B := GetLinearRGBValue( FBTo, FBFrom, x );
+    R := GetLinearRGBValue( FR, FRTo, x );
+    G := GetLinearRGBValue( FG, FGTo, x );
+    B := GetLinearRGBValue( FB, FBTo, x );
   end
   else
   if rgbNonLinear = FRGBGradient then
   begin
-    R := GetNonLinearRGBValue( FRTo, FRFrom, x );
-    G := GetNonLinearRGBValue( FGTo, FGFrom, x );
-    B := GetNonLinearRGBValue( FBTo, FBFrom, x );
+    R := GetNonLinearRGBValue( FR, FRTo , x );
+    G := GetNonLinearRGBValue( FG, FGTo, x );
+    B := GetNonLinearRGBValue( FB, FBTo , x );
   end;
 end;
 
